@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet add package:*)",
+      "Bash(dotnet ef migrations add:*)",
+      "Bash(taskkill:*)",
+      "Bash(dotnet ef database update:*)",
+      "Bash(xxd:*)",
+      "Bash(findstr:*)",
+      "Bash(dotnet ef database query \"INSERT INTO \"\"Website\"\".\"\"CareerOpenings\"\" \\(\"\"Title\"\", \"\"Department\"\", \"\"Location\"\", \"\"JobType\"\", \"\"Description\"\", \"\"Requirements\"\", \"\"PostedDate\"\", \"\"IsActive\"\"\\) VALUES \\(''Senior Full-Stack Developer'', ''Engineering'', ''Dearborn, MI \\(Hybrid\\)'', ''Full-time'', ''We are looking for a Senior Full-Stack Developer to join our engineering team. You will design, develop, and maintain web applications that power our business solutions. You will work closely with product managers and designers to deliver high-quality features and mentor junior developers.'', ''At least 5 years of professional software development experience\\\\nProficiency in C#, .NET, and modern JavaScript/TypeScript frameworks \\(React or Angular\\)\\\\nExperience with PostgreSQL or similar relational databases\\\\nFamiliarity with cloud platforms \\(AWS or Azure\\)\\\\nStrong problem-solving skills and attention to detail\\\\nExcellent communication and teamwork abilities'', NOW\\(\\), true\\), \\(''Cloud Solutions Architect'', ''Engineering'', ''Remote \\(US\\)'', ''Full-time'', ''Join our team as a Cloud Solutions Architect to design and implement scalable cloud infrastructure for our clients. You will evaluate business requirements, recommend architecture patterns, and lead migration projects from on-premises to cloud environments.'', ''At least 7 years of experience in IT infrastructure or cloud engineering\\\\nAWS or Azure certification \\(Solutions Architect level preferred\\)\\\\nExperience designing microservices architectures\\\\nStrong understanding of networking, security, and DevOps practices\\\\nAbility to communicate complex technical concepts to non-technical stakeholders'', NOW\\(\\), true\\), \\(''Business Analyst'', ''Operations'', ''Dearborn, MI'', ''Contract'', ''We are seeking a Business Analyst to bridge the gap between our technology teams and business stakeholders. You will gather requirements, create detailed specifications, and help ensure project deliverables align with business objectives.'', ''At least 3 years of experience as a Business Analyst\\\\nStrong analytical and documentation skills\\\\nExperience with Agile/Scrum methodologies\\\\nProficiency in tools such as Jira, Confluence, and Visio\\\\nExcellent interpersonal and presentation skills'', NOW\\(\\), true\\);\")",
+      "Bash(where:*)",
+      "Bash(dotnet tool list:*)",
+      "Bash(dotnet script eval:*)",
+      "Bash(dotnet run:*)",
+      "Bash(wc -l:*)",
+      "Bash(dotnet ef migrations:*)"
+    ]
+  }
+}

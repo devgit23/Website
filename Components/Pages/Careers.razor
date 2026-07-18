@@ -1,0 +1,135 @@
+@page "/careers"
+@using Microsoft.EntityFrameworkCore
+@using Website.Data
+@using Website.Models
+@inject WebsiteDbContext DbContext
+
+<PageTitle>Careers | Tribox Inc</PageTitle>
+
+<!-- ======= Breadcrumb Hero ======= -->
+<section class="careers-hero">
+    <div class="container">
+        <h2>Careers</h2>
+        <p>Join our team and help shape the future of technology solutions</p>
+        <ol class="breadcrumb justify-content-center">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">Careers</li>
+        </ol>
+    </div>
+</section>
+
+<main id="main">
+
+    <!-- ======= Job Listings Section ======= -->
+    <section class="careers section-bg">
+        <div class="container">
+
+            <div class="section-title">
+                <h2>Open Positions</h2>
+                <p>Explore current opportunities at Tribox Inc</p>
+            </div>
+
+            @if (openings == null)
+            {
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            }
+            else if (openings.Count == 0)
+            {
+                <div class="careers-empty">
+                    <i class="bi bi-briefcase"></i>
+                    <h4>No Open Positions Right Now</h4>
+                    <p>We don't have any openings at the moment, but we're always looking for talented people. Send us your resume and we'll keep you in mind for future opportunities.</p>
+                    <a href="/#contact" class="btn btn-primary btn-lg mt-3">Get in Touch</a>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var job in openings)
+                    {
+                        var collapseId = $"jobDetail-{job.Id}";
+                        <div class="col-lg-6 col-md-12 mb-4">
+                            <div class="career-card">
+                                <div class="career-card-header">
+                                    <h4 class="career-card-title">@job.Title</h4>
+                                    <span class="career-badge career-badge-@job.JobType.ToLower().Replace("-", "").Replace(" ", "")">
+                                        @job.JobType
+                                    </span>
+                                </div>
+
+                                <div class="career-card-meta">
+                                    <span><i class="bi bi-building"></i> @job.Department</span>
+                                    <span><i class="bi bi-geo-alt"></i> @job.Location</span>
+                                    <span><i class="bi bi-calendar3"></i> @job.PostedDate.ToString("MMM dd, yyyy")</span>
+                                </div>
+
+                                <p class="career-card-desc">
+                                    @(job.Description.Length > 160 ? job.Description.Substring(0, 160) + "..." : job.Description)
+                                </p>
+
+                                <button class="btn btn-outline-primary btn-sm career-toggle-btn"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#@collapseId"
+                                        aria-expanded="false"
+                                        aria-controls="@collapseId">
+                                    View Details
+                                </button>
+
+                                <div class="collapse" id="@collapseId">
+                                    <div class="career-detail-content">
+                                        <h5>Description</h5>
+                                        <p>@job.Description</p>
+
+                                        <h5>Requirements</h5>
+                                        <p style="white-space: pre-line;">@job.Requirements</p>
+
+                                        <div class="career-apply-cta">
+                                            <p>Interested in this role? Send your resume to:</p>
+                                            <a href="mailto:info@triboxinc.com?subject=Application: @Uri.EscapeDataString(job.Title)" class="btn btn-primary">
+                                                <i class="bi bi-envelope"></i> Apply via Email
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+        </div>
+    </section>
+
+    <!-- ======= CTA Section ======= -->
+    <section class="cta">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 text-center text-lg-start">
+                    <h3>Don't See the Right Role?</h3>
+                    <p>We're always interested in hearing from talented individuals. Reach out and tell us how you can contribute to our team.</p>
+                </div>
+                <div class="col-lg-3 cta-btn-container text-center">
+                    <a class="cta-btn" href="/#contact">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+@code {
+    private List<CareerOpening>? openings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        openings = await DbContext.CareerOpenings
+            .Where(c => c.IsActive)
+            .OrderByDescending(c => c.PostedDate)
+            .ToListAsync();
+    }
+}

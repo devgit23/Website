@@ -1,0 +1,120 @@
+@rendermode InteractiveServer
+@using Website.Data
+@using Website.Models
+@inject WebsiteDbContext DbContext
+
+<!-- ======= Contact Section ======= -->
+<section id="contact" class="contact">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>Contact</h2>
+            <p>Talk to our experts to know our services better and increase your online visibility.</p>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-5 d-flex align-items-stretch">
+                <div class="info">
+                    <div class="address">
+                        <i class="bi bi-geo-alt"></i>
+                        <h4>Location:</h4>
+                        <p>4114 Schaefer Rd, Dearborn, MI 48126</p>
+                    </div>
+
+                    <div class="email">
+                        <i class="bi bi-envelope"></i>
+                        <h4>Email:</h4>
+                        <p>info@triboxinc.com | Triboxincorporated@gmail.com</p>
+                    </div>
+
+                    <div class="phone">
+                        <i class="bi bi-phone"></i>
+                        <h4>Call:</h4>
+                        <p>+1 313 769 5401</p>
+                    </div>
+                    <iframe src="https://maps.google.com/maps?width=520&amp;height=400&amp;hl=en&amp;q=4114%20Schaefer%20Road%20Dearborn+(Tribox%20Incorporated)&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
+                </div>
+
+            </div>
+
+            <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+                <EditForm Model="formModel" OnValidSubmit="HandleSubmit" FormName="contactForm" class="php-email-form">
+                    <DataAnnotationsValidator />
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="name">Your Name</label>
+                            <InputText @bind-Value="formModel.Name" class="form-control" id="name" />
+                            <ValidationMessage For="() => formModel.Name" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="email">Your Email</label>
+                            <InputText @bind-Value="formModel.Email" class="form-control" id="email" />
+                            <ValidationMessage For="() => formModel.Email" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <InputText @bind-Value="formModel.Subject" class="form-control" id="subject" />
+                        <ValidationMessage For="() => formModel.Subject" />
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <InputTextArea @bind-Value="formModel.Message" class="form-control" id="message" rows="10" />
+                        <ValidationMessage For="() => formModel.Message" />
+                    </div>
+                    <div class="my-3">
+                        <div class="loading" style="display: @(isSubmitting ? "block" : "none")">Loading</div>
+                        <div class="error-message" style="display: @(!string.IsNullOrEmpty(errorMessage) ? "block" : "none")">@errorMessage</div>
+                        <div class="sent-message" style="display: @(isSubmitted ? "block" : "none")">Your message has been sent. Thank you!</div>
+                    </div>
+                    <div class="text-center"><button type="submit" disabled="@isSubmitting">Send Message</button></div>
+                </EditForm>
+            </div>
+
+        </div>
+
+    </div>
+</section><!-- End Contact Section -->
+
+@code {
+    [SupplyParameterFromForm]
+    private ContactFormModel formModel { get; set; } = new();
+
+    private bool isSubmitting = false;
+    private bool isSubmitted = false;
+    private string? errorMessage;
+
+    private async Task HandleSubmit()
+    {
+        isSubmitting = true;
+        errorMessage = null;
+        isSubmitted = false;
+
+        try
+        {
+            var contactUs = new ContactUs
+            {
+                Name = formModel.Name,
+                Email = formModel.Email,
+                Subject = formModel.Subject,
+                Message = formModel.Message,
+                SubmittedAt = DateTime.UtcNow
+            };
+
+            DbContext.ContactUs.Add(contactUs);
+            await DbContext.SaveChangesAsync();
+
+            isSubmitted = true;
+            formModel = new ContactFormModel();
+        }
+        catch (Exception)
+        {
+            errorMessage = "An error occurred. Please try again later.";
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+}
